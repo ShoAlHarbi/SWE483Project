@@ -15,7 +15,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase DB) {
-        DB.execSQL("create Table USERS(email TEXT PRIMARY KEY NOT NULL, passcode INTEGER(4) NOT NULL, SIM TEXT NOT NULL, status TEXT NOT NULL)");
+        DB.execSQL("create Table USERS(email TEXT PRIMARY KEY NOT NULL, passcode TEXT(4) NOT NULL, SIM TEXT NOT NULL, status TEXT NOT NULL)");
     }
 
     @Override
@@ -24,7 +24,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         DB.execSQL("drop Table if exists USERS");
     }
 
-    public long insertUser(String email, int passcode, String SIM, String status)
+    public long insertUser(String email, String passcode, String SIM, String status)
     {
         SQLiteDatabase DB = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
