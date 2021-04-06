@@ -5,6 +5,8 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.widget.Toast;
+
 import androidx.annotation.Nullable;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
@@ -34,6 +36,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         contentValues.put("status", status);
 
         long key =DB.insert("USERS", null, contentValues);
+        //Toast.makeText(RegisterActivity.this, "card is exist", Toast.LENGTH_SHORT).show();
         return key;
     }
 

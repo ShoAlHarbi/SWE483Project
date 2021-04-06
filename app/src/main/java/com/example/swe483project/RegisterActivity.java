@@ -72,8 +72,10 @@ public class RegisterActivity extends AppCompatActivity  {
                     if (isEmailExisit == false){
                         if( SIM.equals("") )
                             Toast.makeText(RegisterActivity.this, "Insert a SIM Card Please", Toast.LENGTH_SHORT).show();
-                        else
+                        else{
                             DB.insertUser(selectedEmail, Passcode, SIM,"Safe");
+                            Toast.makeText(RegisterActivity.this, "card is exist", Toast.LENGTH_SHORT).show();
+                        }
                     } else {
                         Toast.makeText(RegisterActivity.this, "This Email is Existing", Toast.LENGTH_SHORT).show();
                     }
