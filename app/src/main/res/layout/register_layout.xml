@@ -8,8 +8,8 @@
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="202dp"
-        android:layout_height="204dp"
+        android:layout_width="174dp"
+        android:layout_height="171dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -22,7 +22,10 @@
         android:layout_width="291dp"
         android:layout_height="56dp"
         android:ems="10"
+        android:hint="Email"
+        android:imeOptions="actionDone"
         android:inputType="textEmailAddress"
+        android:nextFocusForward="@+id/Passcode1TF"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -30,41 +33,51 @@
         app:layout_constraintVertical_bias="0.257" />
 
     <EditText
+        android:id="@+id/Passcode4TF"
+        android:layout_width="51dp"
+        android:layout_height="56dp"
+        android:layout_marginEnd="44dp"
+        android:ems="10"
+        android:imeOptions="actionDone"
+        android:inputType="number"
+        android:maxLength="1"
+        android:textAlignment="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/EmailTF"
+        app:layout_constraintVertical_bias="0.266" />
+
+    <EditText
         android:id="@+id/Passcode1TF"
         android:layout_width="51dp"
         android:layout_height="56dp"
         android:ems="10"
+        android:imeOptions="actionDone"
         android:inputType="number"
+        android:maxLength="1"
+        android:textAlignment="center"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/Passcode2TF"
-        app:layout_constraintHorizontal_bias="0.674"
+        app:layout_constraintHorizontal_bias="0.676"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/EmailTF"
-        app:layout_constraintVertical_bias="0.209" />
+        app:layout_constraintVertical_bias="0.266" />
 
     <EditText
         android:id="@+id/Passcode2TF"
         android:layout_width="51dp"
         android:layout_height="56dp"
-        android:layout_marginEnd="28dp"
+        android:layout_marginEnd="16dp"
         android:ems="10"
+        android:imeOptions="actionDone"
+        android:includeFontPadding="false"
         android:inputType="number"
+        android:maxLength="1"
+        android:textAlignment="center"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/Passcode3TF"
         app:layout_constraintTop_toBottomOf="@+id/EmailTF"
-        app:layout_constraintVertical_bias="0.206" />
-
-    <EditText
-        android:id="@+id/Passcode4TF"
-        android:layout_width="51dp"
-        android:layout_height="56dp"
-        android:layout_marginEnd="60dp"
-        android:ems="10"
-        android:inputType="number"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/EmailTF"
-        app:layout_constraintVertical_bias="0.206" />
+        app:layout_constraintVertical_bias="0.266" />
 
     <EditText
         android:id="@+id/Passcode3TF"
@@ -72,11 +85,14 @@
         android:layout_height="56dp"
         android:layout_marginEnd="28dp"
         android:ems="10"
+        android:imeOptions="actionDone"
         android:inputType="number"
+        android:maxLength="1"
+        android:textAlignment="center"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/Passcode4TF"
         app:layout_constraintTop_toBottomOf="@+id/EmailTF"
-        app:layout_constraintVertical_bias="0.206" />
+        app:layout_constraintVertical_bias="0.266" />
 
     <Button
         android:id="@+id/RegisterButton"
@@ -90,5 +106,18 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/Passcode3TF" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Passcode"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@+id/Passcode1TF"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.124"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/EmailTF"
+        app:layout_constraintVertical_bias="0.678" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
