@@ -20,6 +20,7 @@ import androidx.core.app.ActivityCompat;
 public class RegisterActivity extends AppCompatActivity  {
 
     private static final int MY_PERMISSION_REQUEST_CODE_PHONE_STATE = 1;
+    private static final int MY_PERMISSION_REQUEST_CODE_BOOT_COMPLETED = 2;
 
     EditText email;
     EditText passcode1;
@@ -92,7 +93,15 @@ public class RegisterActivity extends AppCompatActivity  {
             // Check if we have READ_PHONE_STATE permission
             int readPhoneStatePermission = ActivityCompat.checkSelfPermission(this,
                     Manifest.permission.READ_PHONE_STATE);
+            int readBootePermission = ActivityCompat.checkSelfPermission(this,
+                    Manifest.permission.RECEIVE_BOOT_COMPLETED);
 
+            if (readBootePermission != PackageManager.PERMISSION_GRANTED){
+                this.requestPermissions(
+                        new String[]{Manifest.permission.RECEIVE_BOOT_COMPLETED},
+                        MY_PERMISSION_REQUEST_CODE_BOOT_COMPLETED
+                );
+            }
             if ( readPhoneStatePermission != PackageManager.PERMISSION_GRANTED) {
                 // If don't have permission so prompt the user.
                 this.requestPermissions(
@@ -104,6 +113,8 @@ public class RegisterActivity extends AppCompatActivity  {
         }
         this.getSIM();
     }
+
+
 
     @SuppressLint("MissingPermission")
     private void getSIM() {
@@ -130,6 +141,19 @@ public class RegisterActivity extends AppCompatActivity  {
                     Toast.makeText(this, "Permission granted!", Toast.LENGTH_LONG).show();
 
                     this.getSIM();
+                }
+                // Cancelled or denied.
+                else {
+                    Toast.makeText(this, "Permission denied!", Toast.LENGTH_LONG).show();
+                }
+                break;
+            }
+            case MY_PERMISSION_REQUEST_CODE_BOOT_COMPLETED:
+            {
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    Toast.makeText(this, "Permission granted!", Toast.LENGTH_LONG).show();
+
                 }
                 // Cancelled or denied.
                 else {
