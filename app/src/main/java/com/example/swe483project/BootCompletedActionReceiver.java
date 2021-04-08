@@ -20,6 +20,7 @@ public class BootCompletedActionReceiver extends BroadcastReceiver {
             Toast.makeText(context, "sim changed", Toast.LENGTH_LONG).show();
             //compare old with new sim card
         }
+
         Intent verifyPage = new Intent(context, VerificationActivity.class);
         verifyPage.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(verifyPage);

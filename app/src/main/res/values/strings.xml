@@ -3,4 +3,7 @@
     <string name="verification">Verification</string>
     <string name="ver_message">Please enter the passcode within 60s to verify your identity</string>
     <string name="submit">Submit</string>
+    <string name="state_OK">You Are 100% Save</string>
+    <string name="state_NOT_OK">Phone Is In Danger</string>
+    <string name="home_note">To stay safe, please make sure that the used email is your current correct email, if not you shall update it from the settings</string>
 </resources>

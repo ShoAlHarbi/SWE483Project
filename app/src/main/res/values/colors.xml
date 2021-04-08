@@ -10,4 +10,8 @@
     <color name="colorDarkYellow">#FED402</color>
     <color name="colorLightWhite">#FAF7F7</color>
     <color name="colorDarkWhite">#EDE1DD</color>
+    <color name="colorDarkRed">#fd4755</color>
+    <color name="colorLightRed">#fe646f</color>
+    <color name="colorDarkTale">#6bd9e7</color>
+    <color name="colorLightTale">#a6e7f0</color>
 </resources>
