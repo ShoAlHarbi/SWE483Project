@@ -75,7 +75,7 @@ public class RegisterActivity extends AppCompatActivity  {
                             Toast.makeText(RegisterActivity.this, "Insert a SIM Card Please", Toast.LENGTH_SHORT).show();
                         else{
                             DB.insertUser(selectedEmail, Passcode, SIM,"Safe");
-                            Toast.makeText(RegisterActivity.this, "card is exist", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(RegisterActivity.this, "Registered Successfully", Toast.LENGTH_SHORT).show();
                         }
                     } else {
                         Toast.makeText(RegisterActivity.this, "This Email is Existing", Toast.LENGTH_SHORT).show();
