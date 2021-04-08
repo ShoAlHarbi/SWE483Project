@@ -12,7 +12,6 @@ import androidx.annotation.RequiresApi;
 public class BootCompletedActionReceiver extends BroadcastReceiver {
 
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onReceive(Context context, Intent intent) {
         if(Intent.ACTION_BOOT_COMPLETED.equals(intent.getAction())) {
@@ -23,7 +22,7 @@ public class BootCompletedActionReceiver extends BroadcastReceiver {
         }
         Intent verifyPage = new Intent(context, VerificationActivity.class);
         verifyPage.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        context.startForegroundService(verifyPage);
+        context.startActivity(verifyPage);
 
     }
 }
