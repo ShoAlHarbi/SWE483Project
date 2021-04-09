@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+import android.content.SharedPreferences;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -39,8 +40,16 @@ public class RegisterActivity extends AppCompatActivity  {
     String Passcode;
     String SIM;
 
+    SharedPreferences sp;
+
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
+
+        sp = getSharedPreferences("register",MODE_PRIVATE);
+        if(sp.getBoolean("registered",false)){
+            goToHome();
+        }
+
         setContentView(R.layout.register_layout);
 
         DB = new DatabaseHelper(this);
@@ -76,6 +85,8 @@ public class RegisterActivity extends AppCompatActivity  {
                         else{
                             DB.insertUser(selectedEmail, Passcode, SIM,"Safe");
                             Toast.makeText(RegisterActivity.this, "Registered Successfully", Toast.LENGTH_SHORT).show();
+                            goToHome();
+                            sp.edit().putBoolean("registered",true).apply();
                         }
                     } else {
                         Toast.makeText(RegisterActivity.this, "This Email is Existing", Toast.LENGTH_SHORT).show();
@@ -83,6 +94,13 @@ public class RegisterActivity extends AppCompatActivity  {
                 }
             }
         });
+    }
+
+    public void goToHome(){
+        Intent i = new Intent(this,HomeActivity.class);
+        i.putExtra("userEmail", selectedEmail);
+        i.putExtra("userSIM", SIM);
+        startActivity(i);
     }
 
     private void askPermissionAndGetSIM() {

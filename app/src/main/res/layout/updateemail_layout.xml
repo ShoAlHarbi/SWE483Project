@@ -46,6 +46,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="76dp"
         android:text="Enter your passcode to verify updating your email"
+        android:textAlignment="center"
         android:textAppearance="@style/TextAppearance.AppCompat.Display2"
         android:textColor="#FFFFFF"
         android:textSize="19sp"
