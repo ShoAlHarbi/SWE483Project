@@ -42,6 +42,7 @@ public class TimerService extends Service {
 
             @Override
             public void onFinish() {
+                Log.i(TAG,"Time is up !!1!!");
                 intent.putExtra("finish",true);
                 sendBroadcast(intent);
                 //sen email
@@ -82,7 +83,7 @@ public class TimerService extends Service {
 
     private Notification createTimerNotification() {
         createNotificationChannel();
-        Intent notificationIntent = new Intent(this, HomeActivity.class);
+        Intent notificationIntent = new Intent(this, VerificationActivity.class);
         notificationIntent.setAction(Constants.ACTION.MAIN_ACTION);
         notificationIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
                 | Intent.FLAG_ACTIVITY_CLEAR_TASK);

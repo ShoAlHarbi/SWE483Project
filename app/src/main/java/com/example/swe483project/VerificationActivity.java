@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class VerificationActivity extends AppCompatActivity {
 
@@ -22,7 +23,7 @@ public class VerificationActivity extends AppCompatActivity {
     TextView timerView;
     Intent timerService;
     Button submitButton;
-    String TAG = "VerificationActivity";
+    String TAG = "com.example.VerificationActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -122,6 +123,11 @@ public class VerificationActivity extends AppCompatActivity {
             long millisUntilFinished = intent.getLongExtra("countdown", 60000);
             String timeLift = Long.toString(millisUntilFinished / 1000) + "s";
             timerView.setText(timeLift);
+
+
+            if(intent.hasExtra("finish"))
+                //Log.i(TAG, "heeeeeerre after finish");
+                Toast.makeText(this, "time is up", Toast.LENGTH_LONG).show();
 
         }
     }
