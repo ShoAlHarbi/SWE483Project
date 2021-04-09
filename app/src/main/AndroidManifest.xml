@@ -39,6 +39,7 @@
                 <action android:name="android.intent.action.SIM_STATE_CHANGED"/>
             </intent-filter>
         </receiver>
+        <service android:name=".TimerService"/>
     </application>
 
 </manifest>

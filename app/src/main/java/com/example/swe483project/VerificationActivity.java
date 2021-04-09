@@ -9,6 +9,9 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -18,9 +21,12 @@ public class VerificationActivity extends AppCompatActivity {
     String passcode;
     TextView timerView;
     Intent timerService;
+    Button submitButton;
+    String TAG = "VerificationActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.i(TAG,"onCreate");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.verification_layout);
 
@@ -32,8 +38,10 @@ public class VerificationActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+        Log.i(TAG,"onStart");
         //setting the timer
         timerService = new Intent(this, TimerService.class);
+        timerService.setAction(Constants.ACTION.STARTFOREGROUND_ACTION);
         startService(timerService);
         registerReceiver(broadcastReceiver, new IntentFilter(TimerService.COUNTDOWN_BR));
     }
@@ -41,10 +49,25 @@ public class VerificationActivity extends AppCompatActivity {
     private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-           //update ui
+            //update ui
+            updateTimer(intent);
         }
 
     };
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        unregisterReceiver(broadcastReceiver);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        registerReceiver(broadcastReceiver,new IntentFilter(TimerService.COUNTDOWN_BR));
+    }
+
+
 
     void textFieldsDynamicNavigation (final EditText first, final EditText second){
         first.addTextChangedListener(new TextWatcher() {
@@ -80,6 +103,18 @@ public class VerificationActivity extends AppCompatActivity {
         //timer view
         timerView = findViewById(R.id.timerTextView);
 
+        //submit button
+        submitButton = findViewById(R.id.submitButton);
+
+        submitButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                timerService.setAction(Constants.ACTION.STOPFOREGROUND_ACTION);
+                startService(timerService);
+                unregisterReceiver(broadcastReceiver);
+            }
+        });
+
     }//end init
 
     void updateTimer(Intent intent){
@@ -87,6 +122,7 @@ public class VerificationActivity extends AppCompatActivity {
             long millisUntilFinished = intent.getLongExtra("countdown", 60000);
             String timeLift = Long.toString(millisUntilFinished / 1000) + "s";
             timerView.setText(timeLift);
+
         }
     }
 }
