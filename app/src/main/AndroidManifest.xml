@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.example.swe483project">
 
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
@@ -27,6 +28,10 @@
         </activity>
 
         <activity android:name=".HomeActivity">
+
+        </activity>
+
+        <activity android:name=".UpdateEmailActivity">
 
         </activity>
 
