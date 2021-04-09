@@ -70,27 +70,23 @@ public class RegisterActivity extends AppCompatActivity  {
                 pass2 = passcode2.getText().toString();
                 pass3 = passcode3.getText().toString();
                 pass4 = passcode4.getText().toString();
-
                 //input data
                 selectedEmail = email.getText().toString();
                 Passcode = pass1+pass2+pass3+pass4;
+                //to check if email exists
+                Boolean isEmailExisit = DB.checkExistEmail(selectedEmail);
 
+                //validation
                 if ( selectedEmail.equals("") || pass1.equals("") || pass2.equals("") || pass3.equals("") || pass4.equals(""))
                     Toast.makeText(RegisterActivity.this, "All Fields Mandatory", Toast.LENGTH_SHORT).show();
+                else if (isEmailExisit == true)
+                    Toast.makeText(RegisterActivity.this, "This Email is Existing", Toast.LENGTH_SHORT).show();
+                else if (SIM.equals(""))
+                    Toast.makeText(RegisterActivity.this, "Insert a SIM Card Please", Toast.LENGTH_SHORT).show();
                 else {
-                    Boolean isEmailExisit = DB.checkExistEmail(selectedEmail);
-                    if (isEmailExisit == false){
-                        if( SIM.equals("") )
-                            Toast.makeText(RegisterActivity.this, "Insert a SIM Card Please", Toast.LENGTH_SHORT).show();
-                        else{
-                            DB.insertUser(selectedEmail, Passcode, SIM,"Safe");
-                            Toast.makeText(RegisterActivity.this, "Registered Successfully", Toast.LENGTH_SHORT).show();
-                            goToHome();
-                            sp.edit().putBoolean("registered",true).apply();
-                        }
-                    } else {
-                        Toast.makeText(RegisterActivity.this, "This Email is Existing", Toast.LENGTH_SHORT).show();
-                    }
+                    DB.insertUser(selectedEmail, Passcode, SIM, "Safe");
+                    goToHome();
+                    sp.edit().putBoolean("registered", true).apply();
                 }
             }
         });
