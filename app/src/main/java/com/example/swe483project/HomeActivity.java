@@ -1,5 +1,7 @@
 package com.example.swe483project;
 
+//https://stackoverflow.com/questions/12074156/android-storing-retrieving-strings-with-shared-preferences
+
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;

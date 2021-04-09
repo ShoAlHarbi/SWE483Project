@@ -50,10 +50,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             return false;
     }
 
-    public void updateQuery (String query)
+    public void updateEmail (String query)
     {
         SQLiteDatabase DB = this.getWritableDatabase();
         DB.execSQL(query);
+
     }
 
     public Cursor getCustomQuery (String query)

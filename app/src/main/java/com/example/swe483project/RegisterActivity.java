@@ -1,6 +1,9 @@
 package com.example.swe483project;
 
 //Reference: https://o7planning.org/12697/get-phone-number-in-android-using-telephonymanager
+//https://medium.com/@prakharsrivastava_219/keep-the-user-logged-in-android-app-5fb6ce29ed65
+//https://stackoverflow.com/questions/2091465/how-do-i-pass-data-between-activities-in-android-application
+
 
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -9,6 +12,9 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.telephony.TelephonyManager;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -61,6 +67,10 @@ public class RegisterActivity extends AppCompatActivity  {
         passcode4 = findViewById(R.id.Passcode4TF);
         registerButton = findViewById(R.id.RegisterButton);
 
+        textFieldsDynamicNavigation(passcode1,passcode2);
+        textFieldsDynamicNavigation(passcode2,passcode3);
+        textFieldsDynamicNavigation(passcode3,passcode4);
+
         this.askPermissionAndGetSIM();
 
         registerButton.setOnClickListener(new View.OnClickListener() {
@@ -79,6 +89,9 @@ public class RegisterActivity extends AppCompatActivity  {
                 //validation
                 if ( selectedEmail.equals("") || pass1.equals("") || pass2.equals("") || pass3.equals("") || pass4.equals(""))
                     Toast.makeText(RegisterActivity.this, "All Fields Mandatory", Toast.LENGTH_SHORT).show();
+                else if (isValidEmail(selectedEmail) == false){
+                    Toast.makeText(RegisterActivity.this, "Enter a Valid Email", Toast.LENGTH_SHORT).show();
+                }
                 else if (isEmailExisit == true)
                     Toast.makeText(RegisterActivity.this, "This Email is Existing", Toast.LENGTH_SHORT).show();
                 else if (SIM == null)
@@ -91,6 +104,10 @@ public class RegisterActivity extends AppCompatActivity  {
                 }
             }
         });
+    }
+
+    public static boolean isValidEmail(CharSequence target) {
+        return (Patterns.EMAIL_ADDRESS.matcher(target).matches());
     }
 
     public void goToHome(){
@@ -194,6 +211,24 @@ public class RegisterActivity extends AppCompatActivity  {
         }
     }
 
+    void textFieldsDynamicNavigation (final EditText first, final EditText second){
+        first.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
+            }
 
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if(first.getText().toString().length() == 1){
+                    second.requestFocus();
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+    }
 }
