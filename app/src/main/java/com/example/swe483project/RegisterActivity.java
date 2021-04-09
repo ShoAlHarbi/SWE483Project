@@ -81,12 +81,13 @@ public class RegisterActivity extends AppCompatActivity  {
                     Toast.makeText(RegisterActivity.this, "All Fields Mandatory", Toast.LENGTH_SHORT).show();
                 else if (isEmailExisit == true)
                     Toast.makeText(RegisterActivity.this, "This Email is Existing", Toast.LENGTH_SHORT).show();
-                else if (SIM.equals(""))
+                else if (SIM == null)
                     Toast.makeText(RegisterActivity.this, "Insert a SIM Card Please", Toast.LENGTH_SHORT).show();
                 else {
                     DB.insertUser(selectedEmail, Passcode, SIM, "Safe");
                     goToHome();
                     sp.edit().putBoolean("registered", true).apply();
+                    sp.edit().putString("email", selectedEmail).apply();
                 }
             }
         });
@@ -95,7 +96,6 @@ public class RegisterActivity extends AppCompatActivity  {
     public void goToHome(){
         Intent i = new Intent(this,HomeActivity.class);
         i.putExtra("userEmail", selectedEmail);
-        i.putExtra("userSIM", SIM);
         startActivity(i);
     }
 
