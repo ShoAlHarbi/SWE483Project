@@ -42,6 +42,7 @@ public class VerificationActivity extends AppCompatActivity {
     String TAG = "com.example.VerificationActivity";
     private FusedLocationProviderClient fusedLocationProviderClient;
     String currentLocation;
+    boolean isRegistered = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -130,13 +131,16 @@ public class VerificationActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //ON CORRECT PASSCODE
-                timerService.setAction(Constants.ACTION.STOPFOREGROUND_ACTION);
-                startService(timerService);
-                unregisterReceiver(broadcastReceiver);
+                if(isRegistered) {
+                    timerService.setAction(Constants.ACTION.STOPFOREGROUND_ACTION);
+                    startService(timerService);
+                    unregisterReceiver(broadcastReceiver);
+                    isRegistered = false;
+                }
 
                 //ON WRONG PASSCODE SEND EMAIL
                 getCurrentLocation();
-                Toast.makeText(VerificationActivity.this, currentLocation, Toast.LENGTH_LONG).show();
+                Toast.makeText(VerificationActivity.this, "the location"+currentLocation, Toast.LENGTH_LONG).show();
             }
         });
 
@@ -149,10 +153,10 @@ public class VerificationActivity extends AppCompatActivity {
             timerView.setText(timeLift);
 
 
-            if (intent.hasExtra("finish"))
+            if (intent.hasExtra("finish")){
                 //SEND EMAIL
                 getCurrentLocation();
-                Toast.makeText(this, currentLocation, Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "the location"+currentLocation, Toast.LENGTH_LONG).show();}
 
         }
     }//end updateTimer
