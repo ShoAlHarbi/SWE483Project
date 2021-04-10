@@ -119,7 +119,7 @@ public class RegisterActivity extends AppCompatActivity  {
     private void askPermissionAndGetSIM() {
         // With Android Level >= 23, you have to ask the user
         // for permission to get Phone Number.
-        // 23
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {// 23
 
         // Check if we have READ_PHONE_STATE permission
         int readPhoneStatePermission = ActivityCompat.checkSelfPermission(this,
@@ -140,6 +140,7 @@ public class RegisterActivity extends AppCompatActivity  {
                     MY_PERMISSION_REQUEST_CODE_PHONE_STATE
             );
             return;
+        }
         }
         this.getSIM();
     }
