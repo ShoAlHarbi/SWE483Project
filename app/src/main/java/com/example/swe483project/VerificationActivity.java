@@ -76,8 +76,10 @@ public class VerificationActivity extends AppCompatActivity {
 
     @Override
     protected void onStop() {
+        if(isRegistered) {
+            unregisterReceiver(broadcastReceiver);
+        }
         super.onStop();
-        unregisterReceiver(broadcastReceiver);
     }
 
     @Override
@@ -140,7 +142,6 @@ public class VerificationActivity extends AppCompatActivity {
 
                 //ON WRONG PASSCODE SEND EMAIL
                 getCurrentLocation();
-                Toast.makeText(VerificationActivity.this, "the location"+currentLocation, Toast.LENGTH_LONG).show();
             }
         });
 
@@ -156,7 +157,7 @@ public class VerificationActivity extends AppCompatActivity {
             if (intent.hasExtra("finish")){
                 //SEND EMAIL
                 getCurrentLocation();
-                Toast.makeText(this, "the location"+currentLocation, Toast.LENGTH_LONG).show();}
+                }
 
         }
     }//end updateTimer
@@ -171,12 +172,16 @@ public class VerificationActivity extends AppCompatActivity {
             public void onComplete(@NonNull Task<Location> task) {
                 Location location = task.getResult();
                 if (location != null) {
+                    Log.i(TAG, "location is not null");
                     Geocoder geocoder = new Geocoder(VerificationActivity.this, Locale.getDefault());
                     try {
+                        Log.i(TAG, "inside try");
                         List<Address> addressList = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
                         currentLocation = "Your device is located at" + addressList.get(0).getLatitude() + " , " +
                                 addressList.get(0).getLongitude() + "\nCountry: " + addressList.get(0).getCountryName() +
                                 ", City:" + addressList.get(0).getLocality() + "\n Address: "+addressList.get(0).getAddressLine(0);
+                        Log.i(TAG, "current location is : "+ currentLocation);
+                        Toast.makeText(VerificationActivity.this, "the location"+currentLocation, Toast.LENGTH_LONG).show();
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
