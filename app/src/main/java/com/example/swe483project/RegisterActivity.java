@@ -127,16 +127,11 @@ public class RegisterActivity extends AppCompatActivity  {
         int accessFineLocationPermission = ActivityCompat.checkSelfPermission(this,
                 Manifest.permission.ACCESS_FINE_LOCATION);
 
-        if (accessFineLocationPermission != PackageManager.PERMISSION_GRANTED){
-            this.requestPermissions(
-                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                    MY_PERMISSION_REQUEST_CODE_ACCESS_FINE_LOCATION
-            );
-        }
-        if ( readPhoneStatePermission != PackageManager.PERMISSION_GRANTED) {
+
+        if ( readPhoneStatePermission != PackageManager.PERMISSION_GRANTED && accessFineLocationPermission != PackageManager.PERMISSION_GRANTED) {
             // If don't have permission so prompt the user.
             this.requestPermissions(
-                    new String[]{Manifest.permission.READ_PHONE_STATE},
+                    new String[]{Manifest.permission.READ_PHONE_STATE, Manifest.permission.ACCESS_FINE_LOCATION},
                     MY_PERMISSION_REQUEST_CODE_PHONE_STATE
             );
             return;
