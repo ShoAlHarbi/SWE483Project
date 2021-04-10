@@ -7,9 +7,15 @@ public class Constants {
         public static final String STARTFOREGROUND_ACTION = "com.example.foregroundservice.action.startforeground";
         public static final String STOPFOREGROUND_ACTION = "com.example.foregroundservice.action.stopforeground";
         //public static final String BROADCAST_ACTION = "broadcast";
+
     }
 
     public interface NOTIFICATION_ID {
         public static int FOREGROUND_SERVICE = 5;
+    }
+
+    public interface Config {
+        public static final String EMAIL = "blueshield.swe483@gmail.com";
+        public static final String PASSWORD = "blueshield@SWE483";
     }
 }

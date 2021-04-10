@@ -27,7 +27,7 @@ import androidx.core.app.ActivityCompat;
 public class RegisterActivity extends AppCompatActivity  {
 
     private static final int MY_PERMISSION_REQUEST_CODE_PHONE_STATE = 1;
-    private static final int MY_PERMISSION_REQUEST_CODE_BOOT_COMPLETED = 2;
+    private static final int MY_PERMISSION_REQUEST_CODE_ACCESS_FINE_LOCATION = 2;
 
     EditText email;
     EditText passcode1;
@@ -119,28 +119,27 @@ public class RegisterActivity extends AppCompatActivity  {
     private void askPermissionAndGetSIM() {
         // With Android Level >= 23, you have to ask the user
         // for permission to get Phone Number.
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) { // 23
+        // 23
 
-            // Check if we have READ_PHONE_STATE permission
-            int readPhoneStatePermission = ActivityCompat.checkSelfPermission(this,
-                    Manifest.permission.READ_PHONE_STATE);
-            int readBootePermission = ActivityCompat.checkSelfPermission(this,
-                    Manifest.permission.RECEIVE_BOOT_COMPLETED);
+        // Check if we have READ_PHONE_STATE permission
+        int readPhoneStatePermission = ActivityCompat.checkSelfPermission(this,
+                Manifest.permission.READ_PHONE_STATE);
+        int accessFineLocationPermission = ActivityCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_FINE_LOCATION);
 
-            if (readBootePermission != PackageManager.PERMISSION_GRANTED){
-                this.requestPermissions(
-                        new String[]{Manifest.permission.RECEIVE_BOOT_COMPLETED},
-                        MY_PERMISSION_REQUEST_CODE_BOOT_COMPLETED
-                );
-            }
-            if ( readPhoneStatePermission != PackageManager.PERMISSION_GRANTED) {
-                // If don't have permission so prompt the user.
-                this.requestPermissions(
-                        new String[]{Manifest.permission.READ_PHONE_STATE},
-                        MY_PERMISSION_REQUEST_CODE_PHONE_STATE
-                );
-                return;
-            }
+        if (accessFineLocationPermission != PackageManager.PERMISSION_GRANTED){
+            this.requestPermissions(
+                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                    MY_PERMISSION_REQUEST_CODE_ACCESS_FINE_LOCATION
+            );
+        }
+        if ( readPhoneStatePermission != PackageManager.PERMISSION_GRANTED) {
+            // If don't have permission so prompt the user.
+            this.requestPermissions(
+                    new String[]{Manifest.permission.READ_PHONE_STATE},
+                    MY_PERMISSION_REQUEST_CODE_PHONE_STATE
+            );
+            return;
         }
         this.getSIM();
     }
@@ -179,7 +178,7 @@ public class RegisterActivity extends AppCompatActivity  {
                 }
                 break;
             }
-            case MY_PERMISSION_REQUEST_CODE_BOOT_COMPLETED:
+            case MY_PERMISSION_REQUEST_CODE_ACCESS_FINE_LOCATION:
             {
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
