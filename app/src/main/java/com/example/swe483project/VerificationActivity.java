@@ -52,18 +52,16 @@ public class VerificationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.verification_layout);
         init();
-
-
+        //setting the timer
+        timerService = new Intent(this, TimerService.class);
+        timerService.setAction(Constants.ACTION.STARTFOREGROUND_ACTION);
+        startService(timerService);
     }
 
     @Override
     protected void onStart() {
         super.onStart();
         Log.i(TAG, "onStart");
-        //setting the timer
-        timerService = new Intent(this, TimerService.class);
-        timerService.setAction(Constants.ACTION.STARTFOREGROUND_ACTION);
-        startService(timerService);
         registerReceiver(broadcastReceiver, new IntentFilter(TimerService.COUNTDOWN_BR));
     }
 
