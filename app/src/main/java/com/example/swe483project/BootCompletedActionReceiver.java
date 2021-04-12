@@ -26,7 +26,7 @@ public class BootCompletedActionReceiver extends BroadcastReceiver {
                 String currentSIM = getSIM(context);
                 DatabaseHelper db = new DatabaseHelper(context);
                 String oldSIM = db.getUserData(Constants.DATABASE_COLUMN.SIM);
-                if (currentSIM.equals(oldSIM))
+                if (!currentSIM.equals(oldSIM))
                     isSIMChanged = true;
             }
         }
