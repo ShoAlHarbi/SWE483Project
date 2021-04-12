@@ -19,14 +19,16 @@ public class BootCompletedActionReceiver extends BroadcastReceiver {
         if(Intent.ACTION_BOOT_COMPLETED.equals(intent.getAction()) || Constants.ACTION.QUICBOOT_POWERON.equals(intent.getAction())) {
             Toast.makeText(context, "boot completed", Toast.LENGTH_LONG).show();
             isbooted = true;
-        } else if (Constants.ACTION.SIM_STATE_CHANGED.equals(intent.getAction()) && intent.hasExtra("READY")){
-            Toast.makeText(context, "sim changed", Toast.LENGTH_LONG).show();
-            //compare old with new sim card
-            String currentSIM = getSIM(context);
-            DatabaseHelper db = new DatabaseHelper(context);
-            String oldSIM = db.getUserData(Constants.DATABASE_COLUMN.SIM);
-            if(currentSIM.equals(oldSIM))
-                isSIMChanged = true;
+        } else if (Constants.ACTION.SIM_STATE_CHANGED.equals(intent.getAction()) && intent.hasExtra("ss")){
+            if (intent.getExtras().getString("ss").equals("READY")) {
+                Toast.makeText(context, "sim changed", Toast.LENGTH_LONG).show();
+                //compare old with new sim card
+                String currentSIM = getSIM(context);
+                DatabaseHelper db = new DatabaseHelper(context);
+                String oldSIM = db.getUserData(Constants.DATABASE_COLUMN.SIM);
+                if (currentSIM.equals(oldSIM))
+                    isSIMChanged = true;
+            }
         }
 
         if(isbooted || isSIMChanged){
