@@ -182,6 +182,7 @@ public class VerificationActivity extends AppCompatActivity {
                                 ", City:" + addressList.get(0).getLocality() + "\n Address: "+addressList.get(0).getAddressLine(0);
                         Log.i(TAG, "current location is : "+ currentLocation);
                         Toast.makeText(VerificationActivity.this, "the location"+currentLocation, Toast.LENGTH_LONG).show();
+                        sendEmail();
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -190,5 +191,13 @@ public class VerificationActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    private void sendEmail() {
+        String email = "haneenalmhimid@gmail.com";      //user email
+        String subject = "hiiiii";      //email subject
+        String message = "your phone location is" + currentLocation;    //message
+        SendMail sm = new SendMail(this, email, subject, message);
+        sm.execute();
     }
 }
