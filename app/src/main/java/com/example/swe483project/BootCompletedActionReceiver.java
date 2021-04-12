@@ -22,9 +22,8 @@ public class BootCompletedActionReceiver extends BroadcastReceiver {
         } else if (Constants.ACTION.SIM_STATE_CHANGED.equals(intent.getAction())){
             Toast.makeText(context, "sim changed", Toast.LENGTH_LONG).show();
             //compare old with new sim card
-            VerificationActivity verificationActivity = new VerificationActivity();
-            String currentSIM = verificationActivity.getSIM();
-            DatabaseHelper db = new DatabaseHelper(verificationActivity);
+            String currentSIM = getSIM(context);
+            DatabaseHelper db = new DatabaseHelper(context);
             String oldSIM = db.getUserData(Constants.DATABASE_COLUMN.SIM);
             if(currentSIM.equals(oldSIM))
                 isSIMChanged = true;
@@ -36,6 +35,19 @@ public class BootCompletedActionReceiver extends BroadcastReceiver {
             context.startActivity(verifyPage);
         }
 
+    }
+
+    public String getSIM(Context context) {
+        String SIM = "";
+        try {
+            TelephonyManager manager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
+            SIM = manager.getSimSerialNumber();
+        } catch (Exception ex) {
+            Toast.makeText(context,"Error: " + ex.getMessage(),Toast.LENGTH_LONG).show();
+            ex.printStackTrace();
+        }
+
+        return SIM;
     }
 
 
