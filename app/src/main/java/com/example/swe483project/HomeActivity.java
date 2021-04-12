@@ -32,7 +32,7 @@ public class HomeActivity extends AppCompatActivity {
         sp = getSharedPreferences("register",MODE_PRIVATE);
         imageView = findViewById(R.id.statusImageView);
         statusTxt = findViewById(R.id.statusTextView);
-        //imageView.setImageDrawable();
+        setStatus();
         //sp.edit().putString("email", userEmail).apply();
 
         setting = findViewById(R.id.settingButton);
