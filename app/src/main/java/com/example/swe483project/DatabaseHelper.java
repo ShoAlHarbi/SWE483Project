@@ -64,4 +64,22 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return cursor;
     }
 
+    public String getUserData (String data){
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("select * from USERS", null);
+        if(cursor.moveToFirst())
+            return cursor.getString(cursor.getColumnIndex(data));
+        return null;
+    }
+
+    public void updateUserData (String data, String value){
+        String email = getUserData(Constants.DATABASE_COLUMN.EMAIL);
+        String UpdateQuery = "UPDATE USERS SET "+ data +" = \'" + value + "\' WHERE "
+                + "email" + " = \'" + email + "\'";
+        SQLiteDatabase DB = this.getWritableDatabase();
+        DB.execSQL(UpdateQuery);
+    }
+
+
+
 }

@@ -1,5 +1,5 @@
 package com.example.swe483project;
-import android.app.ProgressDialog;
+//resource : https://www.tutorialspoint.com/how-to-send-email-on-android-using-javamail-api
 import android.content.Context;
 import android.os.AsyncTask;
 import android.widget.Toast;

@@ -97,7 +97,7 @@ public class RegisterActivity extends AppCompatActivity  {
                 else if (SIM == null)
                     Toast.makeText(RegisterActivity.this, "Insert a SIM Card Please", Toast.LENGTH_SHORT).show();
                 else {
-                    DB.insertUser(selectedEmail, Passcode, SIM, "Safe");
+                    DB.insertUser(selectedEmail, Passcode, SIM, Constants.STATUS.SAFE);
                     goToHome();
                     sp.edit().putBoolean("registered", true).apply();
                     sp.edit().putString("email", selectedEmail).apply();

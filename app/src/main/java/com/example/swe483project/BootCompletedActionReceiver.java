@@ -14,16 +14,29 @@ public class BootCompletedActionReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        if(Intent.ACTION_BOOT_COMPLETED.equals(intent.getAction())) {
+        boolean isbooted = false;
+        boolean isSIMChanged = false;
+        if(Intent.ACTION_BOOT_COMPLETED.equals(intent.getAction()) || Constants.ACTION.QUICBOOT_POWERON.equals(intent.getAction())) {
             Toast.makeText(context, "boote completed", Toast.LENGTH_LONG).show();
-        } else {
+            isbooted = true;
+        } else if (Constants.ACTION.SIM_STATE_CHANGED.equals(intent.getAction())){
             Toast.makeText(context, "sim changed", Toast.LENGTH_LONG).show();
             //compare old with new sim card
+            VerificationActivity verificationActivity = new VerificationActivity();
+            String currentSIM = verificationActivity.getSIM();
+            DatabaseHelper db = new DatabaseHelper(verificationActivity);
+            String oldSIM = db.getUserData(Constants.DATABASE_COLUMN.SIM);
+            if(currentSIM.equals(oldSIM))
+                isSIMChanged = true;
         }
 
-        Intent verifyPage = new Intent(context, VerificationActivity.class);
-        verifyPage.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        context.startActivity(verifyPage);
+        if(isbooted || isSIMChanged){
+            Intent verifyPage = new Intent(context, VerificationActivity.class);
+            verifyPage.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            context.startActivity(verifyPage);
+        }
 
     }
+
+
 }

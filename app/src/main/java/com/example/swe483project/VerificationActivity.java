@@ -14,6 +14,7 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
+import android.telephony.TelephonyManager;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -31,6 +32,7 @@ import com.google.android.gms.tasks.Task;
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
+
 
 public class VerificationActivity extends AppCompatActivity {
 
@@ -76,7 +78,7 @@ public class VerificationActivity extends AppCompatActivity {
 
     @Override
     protected void onStop() {
-        if(isRegistered) {
+        if (isRegistered) {
             unregisterReceiver(broadcastReceiver);
         }
         super.onStop();
@@ -132,16 +134,36 @@ public class VerificationActivity extends AppCompatActivity {
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //ON CORRECT PASSCODE
-                if(isRegistered) {
+
+                String enteredPasscode = psc1.getText().toString() + psc2.getText().toString() +
+                        psc3.getText().toString() + psc4.getText().toString();
+                if (enteredPasscode.equals("")) {
+                    Toast.makeText(VerificationActivity.this, "Please provide a complete passcode of 4 numbers", Toast.LENGTH_LONG).show();
+                    return;
+                }
+
+                //stop the timer
+                if (isRegistered) {
                     timerService.setAction(Constants.ACTION.STOPFOREGROUND_ACTION);
                     startService(timerService);
                     unregisterReceiver(broadcastReceiver);
                     isRegistered = false;
                 }
 
-                //ON WRONG PASSCODE SEND EMAIL
-                getCurrentLocation();
+                //compare the passcode
+                DatabaseHelper db = new DatabaseHelper(VerificationActivity.this);
+                String currentPasscode = db.getUserData(Constants.DATABASE_COLUMN.PASSCODE);
+                if (enteredPasscode.equals(currentPasscode)) {  //if correct
+                    Toast.makeText(VerificationActivity.this, "Correct passcode !", Toast.LENGTH_LONG).show();
+                    db.updateUserData(Constants.DATABASE_COLUMN.SIM, getSIM());
+                    db.updateUserData(Constants.DATABASE_COLUMN.STATUS, Constants.STATUS.SAFE);
+                }else { //if wrong
+                    Toast.makeText(VerificationActivity.this, "Wrong passcode !", Toast.LENGTH_LONG).show();
+                    db.updateUserData(Constants.DATABASE_COLUMN.STATUS, Constants.STATUS.IN_DANGER);
+                    String email = db.getUserData(Constants.DATABASE_COLUMN.EMAIL);
+                    notifyUser(email);
+                }//end else
+                navigateToHome();
             }
         });
 
@@ -154,15 +176,20 @@ public class VerificationActivity extends AppCompatActivity {
             timerView.setText(timeLift);
 
 
-            if (intent.hasExtra("finish")){
-                //SEND EMAIL
-                getCurrentLocation();
-                }
+            if (intent.hasExtra("finish")) {
+                //time is up GET CURRENT LOCATION AND SEND EMAIL
+                DatabaseHelper db = new DatabaseHelper(VerificationActivity.this);
+                Toast.makeText(VerificationActivity.this, "Your time is up !", Toast.LENGTH_LONG).show();
+                db.updateUserData(Constants.DATABASE_COLUMN.STATUS, Constants.STATUS.IN_DANGER);
+                String email = db.getUserData(Constants.DATABASE_COLUMN.EMAIL);
+                notifyUser(email);
+                navigateToHome();
+            }
 
         }
     }//end updateTimer
 
-    public void getCurrentLocation() {
+    public void notifyUser(final String userEmail) {
 
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             currentLocation = "Location could not be identified due to rejected access to current device location";
@@ -177,12 +204,12 @@ public class VerificationActivity extends AppCompatActivity {
                     try {
                         Log.i(TAG, "inside try");
                         List<Address> addressList = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
-                        currentLocation = "Your device is located at" + addressList.get(0).getLatitude() + " , " +
+                        currentLocation = "Your phone is located at" + addressList.get(0).getLatitude() + " , " +
                                 addressList.get(0).getLongitude() + "\nCountry: " + addressList.get(0).getCountryName() +
-                                ", City:" + addressList.get(0).getLocality() + "\n Address: "+addressList.get(0).getAddressLine(0);
-                        Log.i(TAG, "current location is : "+ currentLocation);
-                        Toast.makeText(VerificationActivity.this, "the location"+currentLocation, Toast.LENGTH_LONG).show();
-                        sendEmail();
+                                ", City: " + addressList.get(0).getLocality() + "\nAddress: " + addressList.get(0).getAddressLine(0);
+                        Log.i(TAG, "current location is : " + currentLocation);
+                        Toast.makeText(VerificationActivity.this, "the location" + currentLocation, Toast.LENGTH_LONG).show();
+                        sendEmail(userEmail);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -193,11 +220,29 @@ public class VerificationActivity extends AppCompatActivity {
 
     }
 
-    private void sendEmail() {
-        String email = "haneenalmhimid@gmail.com";      //user email
-        String subject = "hiiiii";      //email subject
-        String message = "your phone location is" + currentLocation;    //message
+    private void sendEmail(String userEmail) {
+        String email = userEmail;      //user email
+        String subject = "BLUE SHIELD - Important security alert";      //email subject
+        String message = "This is a security alert from BLUE SHIELD to tell you that your phone has been stolen.\n" + currentLocation;    //message
         SendMail sm = new SendMail(this, email, subject, message);
         sm.execute();
+    }
+
+    public String getSIM() {
+        String SIM = "";
+        try {
+            TelephonyManager manager = (TelephonyManager) this.getSystemService(Context.TELEPHONY_SERVICE);
+            SIM = manager.getSimSerialNumber();
+        } catch (Exception ex) {
+            Toast.makeText(this,"Error: " + ex.getMessage(),Toast.LENGTH_LONG).show();
+            ex.printStackTrace();
+        }
+
+        return SIM;
+    }
+
+    private void navigateToHome(){
+        Intent intent = new Intent(VerificationActivity.this, HomeActivity.class);
+        startActivity(intent);
     }
 }
