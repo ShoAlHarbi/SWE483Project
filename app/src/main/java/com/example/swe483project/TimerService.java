@@ -7,16 +7,11 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
-import android.os.Build;
 import android.os.CountDownTimer;
 import android.os.IBinder;
 import android.util.Log;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
-import androidx.core.app.NotificationCompat;
-
-import java.security.Provider;
 
 public class TimerService extends Service {
 
@@ -42,7 +37,7 @@ public class TimerService extends Service {
 
             @Override
             public void onFinish() {
-                Log.i(TAG,"Time is up !!1!!");
+                Log.i(TAG,"Time is up !!!!");
                 intent.putExtra("finish",true);
                 sendBroadcast(intent);
                 //sen email
@@ -103,7 +98,7 @@ public class TimerService extends Service {
         // Create the NotificationChannel, but only on API 26+ because
         // the NotificationChannel class is new and not in the support library
         CharSequence name = "TimerServiceChannel";
-        String description = "anything";
+        String description = "A channel for the verification timer notifications";
         int importance = NotificationManager.IMPORTANCE_LOW;
         NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
         channel.setDescription(description);

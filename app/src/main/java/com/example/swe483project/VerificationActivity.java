@@ -48,7 +48,6 @@ public class VerificationActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Log.i(TAG, "onCreate");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.verification_layout);
         init();
@@ -61,7 +60,6 @@ public class VerificationActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        Log.i(TAG, "onStart");
         registerReceiver(broadcastReceiver, new IntentFilter(TimerService.COUNTDOWN_BR));
     }
 
@@ -197,16 +195,13 @@ public class VerificationActivity extends AppCompatActivity {
             public void onComplete(@NonNull Task<Location> task) {
                 Location location = task.getResult();
                 if (location != null) {
-                    Log.i(TAG, "location is not null");
                     Geocoder geocoder = new Geocoder(VerificationActivity.this, Locale.getDefault());
                     try {
-                        Log.i(TAG, "inside try");
                         List<Address> addressList = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
                         currentLocation = "Your phone is located at" + addressList.get(0).getLatitude() + " , " +
                                 addressList.get(0).getLongitude() + "\nCountry: " + addressList.get(0).getCountryName() +
                                 ", City: " + addressList.get(0).getLocality() + "\nAddress: " + addressList.get(0).getAddressLine(0);
-                        Log.i(TAG, "current location is : " + currentLocation);
-                        Toast.makeText(VerificationActivity.this, "the location" + currentLocation, Toast.LENGTH_LONG).show();
+                        //as soon as we get the location send an email to the user
                         sendEmail(userEmail);
                     } catch (IOException e) {
                         e.printStackTrace();

@@ -9,7 +9,7 @@ import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 
-public class BootCompletedActionReceiver extends BroadcastReceiver {
+public class actionReceiver extends BroadcastReceiver {
 
 
     @Override
@@ -23,12 +23,10 @@ public class BootCompletedActionReceiver extends BroadcastReceiver {
             if (intent.getExtras().getString("ss").equals("READY")) {
                 Toast.makeText(context, "sim changed", Toast.LENGTH_LONG).show();
                 //compare old with new sim card
-                String currentSIM = getSIM(context);
-                DatabaseHelper db = new DatabaseHelper(context);
-                String oldSIM = db.getUserData(Constants.DATABASE_COLUMN.SIM);
-                if (!currentSIM.equals(oldSIM))
-                    isSIMChanged = true;
+                    isSIMChanged = isChanged(context);
             }
+        }else{  //in case uncaught  boot action
+            isbooted = true;
         }
 
         if(isbooted || isSIMChanged){
@@ -37,6 +35,18 @@ public class BootCompletedActionReceiver extends BroadcastReceiver {
             context.startActivity(verifyPage);
         }
 
+    }
+
+    private boolean isChanged(Context context) {
+        boolean isChanged;
+        String currentSIM = getSIM(context);
+        DatabaseHelper db = new DatabaseHelper(context);
+        String oldSIM = db.getUserData(Constants.DATABASE_COLUMN.SIM);
+        isChanged =  !currentSIM.equals(oldSIM);
+        if(!isChanged){
+            db.updateUserData(Constants.DATABASE_COLUMN.STATUS, Constants.STATUS.SAFE);
+        }
+        return isChanged;
     }
 
     public String getSIM(Context context) {
